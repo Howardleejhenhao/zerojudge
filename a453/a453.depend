@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1640919997 source:d:\program\zerojudge\a453\main.cpp
+	<iostream>
+	<math.h>
+

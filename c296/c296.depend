@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1639150843 source:d:\program\zerojudge\c296\main.cpp
+	<iostream>
+	<algorithm>
+
