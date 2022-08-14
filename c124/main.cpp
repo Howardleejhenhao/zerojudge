@@ -1,44 +1,74 @@
+/*
+|----|   |----|
+|    |   |    |
+|    ----|    |
+|             |
+|    ----|    |
+|    |   |    |
+|----|   |----|
+
+*/
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
 #include <bits/stdc++.h>
 #define ll long long
-#define fastio ios::sync_with_stdio(0), cin.tie(0)
 
 using namespace std;
-template<class Fun> class y_combinator_result {
-    Fun fun_;
-public:
-    template<class T> explicit y_combinator_result(T &&fun): fun_(std::forward<T>(fun)) {}
-    template<class ...Args> decltype(auto) operator()(Args &&...args) { return fun_(std::ref(*this), std::forward<Args>(args)...); }
-};
-template<class Fun> decltype(auto) y_combinator(Fun &&fun) { return y_combinator_result<std::decay_t<Fun>>(std::forward<Fun>(fun)); }
 
-
-template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
-template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
-
-void dbg_out() { cerr << endl; }
-template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
-
-#ifndef HOWARD_DBG
-#define dbg(...) cerr << "(" << #__VA_ARGS__ << "):", dbg_out(__VA_ARGS__)
-#else
-#define dbg(...)
-#endif
+int mp[50][50][50];
+int visit[50][50][50];
+int a, b, c;
 
 void solve()
 {
-    int l, r, c;
-    cin >> l >> r >> c;
-    char n[l][r][c];
+    while(cin >> a >> b >> c && a && b && c)
+    {
+        memset(mp, 0, sizeof(mp));
+        memset(visit, 0, sizeof(visit));
+        int sx, sy, sz, fx, fy, fz;
+        for(int i = 0; i < a; i++)
+        {
+            for(int j = 0; j < b; j++)
+            {
+                string s;
+                cin >> s;
+                for(int k = 0; k < c; k++)
+                {
+                    if(s[k] == 'S')
+                    {
+                        sx = k;
+                        sy = j;
+                        sz = i;
+                        mp[i][j][k] = 1;
+                    }
+                    else if(s[k] == 'E')
+                    {
+                        fx = k;
+                        fy = j;
+                        fz = i;
+                        mp[i][j][k] = 1;
+                    }
+                    else
+                    {
+                        mp[i][j][k] = (s[k] == '.' ? 1 : 0);
+                    }
+                }
+            }
+        }
+        int go[6][3] = {{1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}};
+        int ans = 0;
+        visit[sz][sy][sx] = 1;
+        queue<vector<int>(3)> q;
+
+    }
     return;
 }
 
 int main()
 {
     ios::sync_with_stdio(false);
-#ifndef HOWARD_DBG
     cin.tie(nullptr);
-#endif
-
 
     int t = 1;
     // cin >> t;
