@@ -16,32 +16,39 @@
 
 using namespace std;
 
+vector<int> mp((int)1e5 + 100);
+
 void solve()
 {
     int n, m;
     cin >> n >> m;
-    vector<pair<int, int>> v(m);
-    for(int i = 0; i < m; i++)
+    while(m--)
     {
-        cin >> v[i].first >> v[i].second;
+        int a, b;
+        cin >> a >> b;
+        for(int i = a; i < b; i++) mp[i]++;
     }
-    sort(v.begin(), v.end());
-    int now = 0;
-
-    for(int i = 0; i < m; i++)
+    int now = -1;
+    for(int i = 0; i < n; i++)
     {
-        if(v[i].first <= now)
+        if(now == -1)
         {
-            now = v[i].second;
-            continue;
+            if(mp[i] == 0)
+            {
+                now = i;
+
+            }
         }
-        cout << now << ' ' << v[i].first << '\n';
-        now = v[i].second;
+        else
+        {
+            if(mp[i] != 0)
+            {
+                cout << now << ' ' << i << '\n';
+                now = -1;
+            }
+        }
     }
-    if(now < n)
-    {
-        cout << now << ' ' << n << '\n';
-    }
+    if(now != -1) cout << now << ' ' << n << '\n';
     return;
 }
 

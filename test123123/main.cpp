@@ -1,25 +1,41 @@
-#include<bits/stdc++.h>
+/*
+|----|   |----|
+|    |   |    |
+|    ----|    |
+|             |
+|    ----|    |
+|    |   |    |
+|----|   |----|
+
+*/
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#include <bits/stdc++.h>
+#define ll long long
+
 using namespace std;
 
-int main() {
-    int n;
-    cin >> n;
-    for(int i = 1; i <= n; i++)
-    {
-        for(int j = 1; j <= n - i; j++)
-        {
-            cout << "_";
-        }
-        for(int j = 1; j <= 2 * i - 1; j++)
-        {
-            cout << "*";
-        }
-        for(int j = 1; j <= n - i; j++)
-        {
-            cout << "_";
-        }
-        cout << endl;
-    }
 
+void solve()
+{
+    int n, m;
+    cin >> n >> m;
+    if((n + m) % 2) cout << "Burenka\n";
+    else cout << "Tonya\n";
+    return;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t = 1;
+    cin >> t;
+    while(t--)
+    {
+        solve();
+    }
     return 0;
 }

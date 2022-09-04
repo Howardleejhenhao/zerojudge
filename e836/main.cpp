@@ -1,37 +1,79 @@
+/*
+|----|   |----|
+|    |   |    |
+|    ----|    |
+|             |
+|    ----|    |
+|    |   |    |
+|----|   |----|
+
+*/
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
 #include <bits/stdc++.h>
-#include <algorithm>
+#define ll long long
 
 using namespace std;
 
-int main()
+#define N 10000
+vector<int> v((int)2e4 + 100);
+vector<int> place((int)2e4 + 100, -1);
+
+bool cmp(pair<int, int> a, pair<int, int> b)
 {
+    return a.first < b.first;
+}
 
-    int num_list[1010];
-    int num;
-
-    cin >> num;
-    int in;
-    memset(num_list, 0, sizeof(num_list));
-    for(int i = 0; i < num; i++)
+void solve()
+{
+    int n;
+    cin >> n;
+    for(int i = 0; i < n; i++)
     {
+        int in;
         cin >> in;
-        num_list[in] += 1;
+        v[in + N]++;
+        if(place[in + N] == -1) place[in + N] = i;
     }
-
-
-    int maxnum;
-    maxnum = max(num_list);
-
-    int count_num = 0;
-
-    for(int i = 0; i < num_list.length(); i++)
+    auto it = max_element(v.begin(), v.end());
+    if(*it == 1)
     {
-        if(num_list[i] != 0)
+        cout << n << '\n' << "NO\n";
+        return;
+    }
+    vector<pair<int, int>> ans;
+    int aa = 0;
+    for(int i = 0; i < (int)2e4 + 50; i++)
+    {
+        aa += v[i] > 0;
+        if(*it == v[i])
         {
-            count_num += 1;
+            //cout << place[i] << ' ' << i - N << '\n';
+            ans.push_back({place[i], i - N});
         }
     }
-    cout << count_num << endl;
+    sort(ans.begin(), ans.end(), cmp);
+    cout << aa << '\n';
+    for(auto i : ans)
+    {
+        cout << i.second << ' ';
+    }
 
+
+    return;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t = 1;
+    // cin >> t;
+    while(t--)
+    {
+        solve();
+    }
     return 0;
 }

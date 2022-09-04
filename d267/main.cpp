@@ -1,43 +1,55 @@
+/*
+|----|   |----|
+|    |   |    |
+|    ----|    |
+|             |
+|    ----|    |
+|    |   |    |
+|----|   |----|
+
+*/
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
 #include <bits/stdc++.h>
+#define ll long long
 
 using namespace std;
 
+void solve()
+{
+    string s;
+    getline(cin, s);
+    int cnt[60] = {0};
+    for(char i : s)
+    {
+        if(i >= 'a' && i <= 'z') cnt[i - 'a']++;
+        if(i >= 'A' && i <= 'Z') cnt[i - 'A']++;
+    }
+    int m = *max_element(cnt, cnt + 30);
+    for(int i = 0; i < 30; i++)
+    {
+        if(cnt[i] == m)
+        {
+            cout << (char)(i + 'a');
+        }
+    }
+    cout << '\n';
+    return;
+}
+
 int main()
 {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
-    int n;
-    cin >> n;
-    string str;
-    getline(cin, str);
-    int v[27];
-
-    while(n--)
+    int t = 1;
+    cin >> t;
+    string sss;
+    getline(cin, sss);
+    while(t--)
     {
-        memset(v, 0, sizeof(v));
-        getline(cin, str);
-        int m = 0;
-        for(int i = 0; i < str.length(); i++)
-        {
-            if(str[i] > 64 && str[i] < 91)
-            {
-                v[str[i] - 64] += 1;
-                m = max(m, v[str[i] - 64]);
-            }
-            else if(str[i] > 96 && str[i] < 123)
-            {
-                v[str[i] - 96] += 1;
-                m = max(m, v[str[i] - 96]);
-            }
-        }
-        for(int i = 1; i <= 36; i++)
-        {
-            if(v[i] == m)
-            {
-                cout << (char)(i + 96);
-            }
-        }
-        cout << '\n';
+        solve();
     }
-
     return 0;
 }
