@@ -1,41 +1,33 @@
-/*
-|----|   |----|
-|    |   |    |
-|    ----|    |
-|             |
-|    ----|    |
-|    |   |    |
-|----|   |----|
-
-*/
-#pragma GCC optimize("O3,unroll-loops")
-#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
-
 #include <bits/stdc++.h>
-#define ll long long
 
 using namespace std;
 
-
-void solve()
-{
-    int n, m;
-    cin >> n >> m;
-    if((n + m) % 2) cout << "Burenka\n";
-    else cout << "Tonya\n";
-    return;
-}
-
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    ios::sync_with_stdio(0), cin.tie(0);
+    int n=0;
 
-    int t = 1;
-    cin >> t;
-    while(t--)
+    cin >> n;
+
+    vector<int> v(n);
+
+    for(int i=1; i<=n; i++)
     {
-        solve();
+        v[i - 1] = i;
     }
+
+    do
+    {
+        for(int i=0; i<n; i++)
+        {
+            cout << v[i] << ' ';
+        }
+        cout << '\n';
+
+
+    }while(next_permutation(v.begin(), v.end()));
+
+
     return 0;
+
 }

@@ -37,13 +37,14 @@ int main()
             {
                 if((s[i] >= 'A' && s[i] <= 'Z') || (s[i] >= 'a' && s[i] <= 'z'))
                 {
-                    if(s[i] > 60)
+                    if(s[i] > 96)
                     {
-                        p[s[i] - 33 - 64].second += 1;
+                        p[s[i] - 97].second++;
                     }
                     else
                     {
-                        p[s[i] - 1 - 64].second += 1;
+                        //cout << s[i] - 65 << '\n';
+                        p[s[i] - 65].second++;
                     }
                 }
             }
