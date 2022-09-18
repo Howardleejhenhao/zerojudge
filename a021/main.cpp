@@ -17,17 +17,17 @@
 using namespace std;
 
 // a < b
-bool less_than(int a[100], int b[100])
+bool less_than(int a[], int b[])
 {
     // 從高位數開始比，對應的位數相比較。
-    for (int i=100-1; i>=0; i--)
+    for (int i=520; i>=0; i--)
         if (a[i] != b[i])   // 一旦ab不一樣大，馬上回傳結果。
             return a[i] < b[i];
     return false;   // 完全相等
 }
 
 // c = a + b;
-void add(int a[550], int b[550], int c[550])
+void add(int a[], int b[], int c[])
 {
     for (int i=0; i<550; i++)   // 對應的位數相加
         c[i] = a[i] + b[i];
@@ -39,7 +39,7 @@ void add(int a[550], int b[550], int c[550])
     }
 }
 
-void sub(int a[550], int b[550], int c[550])
+void sub(int a[], int b[], int c[])
 {
     for (int i=0; i<550; i++)
         c[i] = a[i] - b[i];
@@ -52,7 +52,7 @@ void sub(int a[550], int b[550], int c[550])
         }
 }
 
-void mul(int a[550], int b[550], int c[550])
+void mul(int a[], int b[], int c[])
 {
     for (int i=0; i<550; i++)
         c[i] = 0;
@@ -69,23 +69,23 @@ void mul(int a[550], int b[550], int c[550])
     }
 }
 
-void mul2(int a[550], int b, int c[550])
+void mul2(int a[], int b, int c[])
 {
     for (int i=0; i<550; i++)
         c[i] = a[i] * b;
 
-    for (int i=0; i<550-1; i++) // 一口氣進位
+    for (int i=0; i<550; i++) // 一口氣進位
     {
         c[i+1] += c[i] / 10;
         c[i] %= 10;
     }
 }
 
-void div(int a[550], int b[550], int c[550])
+void div(int a[], int b[], int c[])
 {
-    int t[550];
+    int t[600];
 
-    for (int i=550-1; i>=0; i--)
+    for (int i=550; i>=0; i--)
         for (int k=9; k>0; k--) // 嘗試商數
         {
             mul2(b+i, k, t);
@@ -123,7 +123,7 @@ void solve()
     {
         if(!flag && c[i] == 0) continue;
         flag = 1;
-        cout << a[i];
+        cout << c[i];
     }
 
     return;
