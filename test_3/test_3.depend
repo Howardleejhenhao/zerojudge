@@ -1,4 +1,9 @@
 # depslib dependency file v1.0
-1662732155 source:d:\program\coding_c++\zerojudge\test_3\main.cpp
-	<bits/stdc++.h>
+1666277052 source:d:\program\coding_c++\zerojudge\test_3\main.cpp
+	<iostream>
+	<vector>
+	<queue>
+	<cstring>
+	<climits>
+	<math.h>
 
