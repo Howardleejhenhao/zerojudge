@@ -1,19 +1,30 @@
-#include<iostream>
-#include<iomanip>
+#include<bits/stdc++.h>
+
 using namespace std;
 
 int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    double a, n, total, b;
-    cin>>n;
-    for (int i=0;i<n;i++){
-        cin>>a;
-        total=0;
-        for (int j=0;j<a;j++){
-            cin>>b;
-            total=total+b;
+    int a, b, c, d, e, f, g, h, m, xmax=0, xmin=0;
+    cin>>a>>b>>c>>d>>e>>f;
+    for (int i=1;i<=c;i++){
+        if (c%i==0 && f%i==0 && i>xmax){
+            xmax=i;
         }
-        cout<<fixed<<setprecision(2)<<total/a<<" \n";
+    }
+    xmin=c*f/xmax;
+    h=(a*xmin+b*xmin/c)+(d*xmin+e*xmin/f);
+    g=h/xmin;
+    if (h%xmin==0){
+        cout<<g;
+    }
+    else {
+        int gg = 1;
+        for(int i = 1; i <= (h % xmin); i++) {
+            if((h % xmin) % i == 0 && xmin % i == 0) {
+                gg = i;
+            }
+        }
+        int ans1 = (h%xmin) / gg;
+        int ans2 = xmin / gg;
+        cout<<g<<" "<<ans1<<" "<<ans2;
     }
 }
