@@ -26,8 +26,21 @@ void solve()
     while(rr > ll) {
         int now = (rr + ll) / 2;
         int use = 1;
-        for(int i = 0; i < n; i++)
+        int th = v[0] + now;
+        for(int i = 0; i < n; i++) {
+            if(v[i] > th) {
+                use++;
+                th = v[i] + now;
+            }
+        }
+        if(use > k) {
+            ll = now + 1;
+        }
+        else {
+            rr = now;
+        }
     }
+    cout << rr << '\n';
     return;
 }
 
