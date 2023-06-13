@@ -1,74 +1,68 @@
+/*
+|----|   |----|
+|    |   |    |
+|    ----|    |
+|             |
+|    ----|    |
+|    |   |    |
+|----|   |----|
+
+*/
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
 #include <bits/stdc++.h>
 #define ll long long
-#define fastio ios::sync_with_stdio(0), cin.tie(0)
 
 using namespace std;
-template<class Fun> class y_combinator_result {
-    Fun fun_;
-public:
-    template<class T> explicit y_combinator_result(T &&fun): fun_(std::forward<T>(fun)) {}
-    template<class ...Args> decltype(auto) operator()(Args &&...args) { return fun_(std::ref(*this), std::forward<Args>(args)...); }
-};
-template<class Fun> decltype(auto) y_combinator(Fun &&fun) { return y_combinator_result<std::decay_t<Fun>>(std::forward<Fun>(fun)); }
 
-
-template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
-template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
-
-void dbg_out() { cerr << endl; }
-template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
-
-#ifndef HOWARD_DBG
-#define dbg(...) cerr << "(" << #__VA_ARGS__ << "):", dbg_out(__VA_ARGS__)
-#else
-#define dbg(...)
-#endif
-
-void solve()
+const int N = 210;
+int mp[N][N];
+int pre[N][N];
+int dp[N][N];
+void solve(int n, int m)
 {
-    int m, n;
-    while(cin >> m >> n)
-    {
-        vector<vector<int>> v(m, vector<int> (n, 0)), dp(m, vector<int> (n, 0));
-        for(int i = 0; i < m; i++)
-        {
-            for(int j = 0; j < n; j++)
-            {
-                cin >> v[i][j];
-            }
+    for(int i = 0; i <= n; i++) {
+        for(int j = 0; j <= m; j++) {
+            mp[i][j] = 0;
+            pre[i][j] = 0;
+            dp[i][j] = 0;
         }
-        dp[0][0] = v[0][0];
-        int mx = 0;
-        for(int i = 0; i < m; i++)
-        {
-            for(int j = 0; j < n; j++)
-            {
-                if(!v[i][j]) continue;
-                if(i > 0) dp[i][j] += dp[i - 1][j];
-                if(j > 0) dp[i][j] += dp[i][j - 1];
-                dp[i][j]++;
-                mx = max(dp[i][j], mx);
-            }
-        }
-        cout << mx << '\n';
-        dbg(dp);
     }
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= m; j++) {
+            cin >> mp[i][j];
+            if(mp[i][j] == 1) dp[i][j] = dp[i - 1][j] + mp[i][j];
+            else dp[i][j] = 0;
+        }
+    }
+    int ans = 0;
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= m; j++) {
+            int now = dp[i][j];
+            for(int k = j; k <= m; k++) {
+                now = min(now, dp[i][k]);
+                ans = max(ans, now * (k - j + 1));
+            }
+        }
+    }
+    cout << ans << '\n';
+
     return;
 }
 
 int main()
 {
     ios::sync_with_stdio(false);
-#ifndef HOWARD_DBG
     cin.tie(nullptr);
-#endif
-
 
     int t = 1;
     // cin >> t;
-    while(t--)
+
+    int n, m;
+    while(cin >> n >> m)
     {
-        solve();
+        solve(n, m);
     }
     return 0;
 }
