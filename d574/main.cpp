@@ -13,11 +13,12 @@ int main()
     while(cin >> num)
     {
         cin >> str;
+        string ans;
         c1 = str[0];
         total = 0;
         if(str.length() == 1)
         {
-            cout << 1 << str[0] << endl;
+            ans += '1' + str[0];
         }
         else
         {
@@ -31,11 +32,11 @@ int main()
                     {
                         if(total == 2)
                         {
-                            cout << total << c1;
+                            ans += to_string(total) + c1;
                         }
                         else
                         {
-                            cout << total << c1;
+                            ans += to_string(total) + c1;
                         }
                     }
                 }
@@ -44,7 +45,7 @@ int main()
 
                     if(total > 2)
                     {
-                        cout << total << c1;
+                        ans += to_string(total) + c1;
                         TF = 0;
                         c1 = str[i];
                         total = 1;
@@ -52,14 +53,14 @@ int main()
                         {
                             if(total == 1)
                             {
-                                cout << total << str[i];
+                                ans += to_string(total) + str[i];
                             }
                             break;
                         }
                     }
                     else if(total == 1)
                     {
-                        cout << total << c1;
+                        ans += to_string(total) + c1;
                         TF = 0;
                         c1 = str[i];
                         total = 1;
@@ -67,14 +68,14 @@ int main()
                         {
                             if(total == 1)
                             {
-                                cout << total << str[i];
+                                ans += to_string(total) + str[i];
                             }
                             break;
                         }
                     }
                     else
                     {
-                        cout << total << c1;
+                        ans += to_string(total) + c1;
                         TF = 0;
                         c1 = str[i];
                         total = 1;
@@ -82,15 +83,16 @@ int main()
                         {
                             if(total == 1)
                             {
-                                cout << total << str[i];
+                                ans += to_string(total) + str[i];
                             }
                             break;
                         }
                     }
                 }
             }
-            cout << endl;
         }
+        if(ans.size() < str.size()) cout << ans << '\n';
+        else cout << str << '\n';
     }
     return 0;
 }
