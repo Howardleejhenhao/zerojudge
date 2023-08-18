@@ -1,110 +1,107 @@
-/*
-|----|   |----|
-|    |   |    |
-|    ----|    |
-|             |
-|    ----|    |
-|    |   |    |
-|----|   |----|
-
-*/
-
 #include <bits/stdc++.h>
 #define ll long long
-#define fastio ios::sync_with_stdio(0), cin.tie(0)
 
 using namespace std;
 
-struct MinCostMaxFlow{
-    typedef int Tcost;
-    static const int MAXV = 5e3 + 10;
-    static const int INFf = 1000000;
-    static const Tcost INFc  = 1e9;
-    struct Edge{
-        int v, cap;
-        Tcost w;
-        int rev;
-        Edge(){}
-        Edge(int t2, int t3, Tcost t4, int t5)
-        : v(t2), cap(t3), w(t4), rev(t5) {}
-    };
-    int V, s, t;
-    vector<Edge> g[MAXV];
-    void init(int n, int _s, int _t){
-        V = n; s = _s; t = _t;
-        for(int i = 0; i <= V; i++) g[i].clear();
-    }
-    void addEdge(int a, int b, int cap, Tcost w){
-        g[a].push_back(Edge(b, cap, w, (int)g[b].size()));
-        g[b].push_back(Edge(a, 0, -w, (int)g[a].size()-1));
-    }
-    Tcost d[MAXV];
-    int id[MAXV], mom[MAXV];
-    bool inqu[MAXV];
-    queue<int> q;
-    pair<int,Tcost> solve(){
-        int mxf = 0; Tcost mnc = 0;
-        while(1){
-            fill(d, d+1+V, INFc);
-            fill(inqu, inqu+1+V, 0);
-            fill(mom, mom+1+V, -1);
-            mom[s] = s;
-            d[s] = 0;
-            q.push(s); inqu[s] = 1;
-            while(q.size()){
-                int u = q.front(); q.pop();
-                inqu[u] = 0;
-                for(int i = 0; i < (int) g[u].size(); i++){
-                    Edge &e = g[u][i];
-                    int v = e.v;
-                    if(e.cap > 0 && d[v] > d[u]+e.w){
-                        d[v] = d[u]+e.w;
-                        mom[v] = u;
-                        id[v] = i;
-                        if(!inqu[v]) q.push(v), inqu[v] = 1;
-                    }
-                }
-            }
-            if(mom[t] == -1) break;
-            int df = INFf;
-            for(int u = t; u != s; u = mom[u])
-                df = min(df, g[mom[u]][id[u]].cap);
-            for(int u = t; u != s; u = mom[u]){
-                Edge &e = g[mom[u]][id[u]];
-                e.cap             -= df;
-                g[e.v][e.rev].cap += df;
-            }
-            mxf += df;
-            mnc += df*d[t];
-        }
-        return {mxf,mnc};
-    }
-}flow;
+const int N = 5e5 + 10;
+const int lgN = 19;
 
-void solve()
-{
-    int n, m, s, t;
-    cin >> n >> m >> s >> t;
-    flow.init(n + 2, s, t);
-    while(m--) {
-        int a, b, c, d;
-        cin >> a >> b >> c >> d;
-        flow.addEdge(a, b, c, d);
+struct RMQ_LCA {
+    int anc[N][lgN + 1];
+    int dis[N][lgN + 1];
+    vector<int> ed[N];
+    int tin[N], tout[N];
+    int ti;
+
+    void build(int x, int f, int d) {
+        for (int i = 0; i <= lgN; i++) {
+            anc[x][i] = f;
+            dis[x][i] = d;
+            f = anc[f][i];
+            d += dis[x][i];
+        }
     }
-    pair<int, int> ans = flow.solve();
-    cout << ans.first << ' ' << ans.second << '\n';
-    return;
+
+    void dfs(int x, int fx) {
+        anc[x][0] = fx;
+        if (x != fx) build(x, fx, 1);
+        tin[x] = ti++;
+        for (int i : ed[x]) {
+            if (i == fx) continue;
+            dfs(i, x);
+        }
+        tout[x] = ti++;
+    }
+
+    void makeanc() {
+        for (int i = 1; i <= lgN; i++) {
+            for (int u = 1; u < N; u++) {
+                anc[u][i] = anc[anc[u][i - 1]][i - 1];
+            }
+        }
+    }
+
+    bool isAncestor(int x, int y) {
+        return tin[x] <= tin[y] && tout[x] >= tout[y];
+    }
+
+    int getLca(int x, int y) {
+        if (isAncestor(x, y)) return x;
+        if (isAncestor(y, x)) return y;
+        for (int i = lgN; i >= 0; i--) {
+            if (!isAncestor(anc[y][i], x)) {
+                y = anc[y][i];
+            }
+        }
+        return anc[y][0];
+    }
+
+    int queryDis(int x, int y) {
+        int lca = getLca(x, y);
+        int ret = 0;
+        for (int i = lgN; i >= 0; i--) {
+            if (!isAncestor(anc[x][i], lca)) {
+                ret += dis[x][i];
+                x = anc[x][i];
+            }
+            if (!isAncestor(anc[y][i], lca)) {
+                ret += dis[y][i];
+                y = anc[y][i];
+            }
+        }
+        if (x != lca) ret += dis[x][0];
+        if (y != lca) ret += dis[y][0];
+        return ret;
+    }
+};
+
+int n, m;
+
+void solve() {
+    cin >> n >> m;
+    RMQ_LCA lca;
+    for (int i = 0; i < n - 1; i++) {
+        int a, b;
+        cin >> a >> b;
+        lca.ed[a].push_back(b);
+        lca.ed[b].push_back(a);
+    }
+    lca.dfs(1, 1);
+    lca.makeanc();
+    while (m--) {
+        int a, b;
+        cin >> a >> b;
+        cout << lca.queryDis(a, b) << '\n';
+    }
 }
 
-int main()
-{
+int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
     int t = 1;
     // cin >> t;
-    while(t--)
-    {
+    while (t--) {
         solve();
     }
     return 0;
