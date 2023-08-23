@@ -12,19 +12,23 @@
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #include <bits/stdc++.h>
-#define ll long long
+#define int long long
 
 using namespace std;
 
 void solve()
 {
-    int a, b, c, aa, bb, cc;
-    cin >> a >> aa >> b >> bb >> c >> cc;
-    cout << (max({a, b, c}) - min({a, b, c})) * (max({aa, bb, cc}) - min({aa, bb, cc})) << '\n';
+    int a, b, c, d, e, f;
+    cin >> a >> b >> c >> d >> e >> f;
+    pair<int, int> ab = {c - a, d - b};
+    pair<int, int> ac = {e - a, f - b};
+    int now = ab.first * ac.second - ab.second * ac.first;
+    now = abs(now);
+    cout << now << '\n';
     return;
 }
 
-int main()
+signed main()
 {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
